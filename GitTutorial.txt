@@ -9,7 +9,7 @@ Getting started with Git:
 Cloning our repo:
 1. Cloning is the initial copying of the repository down to your computer
 2. Open terminal and use the following line
-	$ git clone "our url"
+	$ git clone https://github.com/joseyhanish/LigoProject.git
 
 Pulling from the repo:
 1. Before every time you start working, you should pull changes from the repo (copy the changes from the server copy of the code to your local copy of the code)
@@ -35,3 +35,6 @@ If you get stuck in VIM:
 2. Type your message
 3. Press esc to turn VIM to command mode
 4. Press :wq to save and quit
+
+A git cheat-sheet: https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf
+A vim cheat-sheet: https://linux.startcom.org/docs/en/Introduction%20to%20Linux/sect_06_02.html

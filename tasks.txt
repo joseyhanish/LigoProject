@@ -3,3 +3,10 @@ Grab hdf5 files from LIGO (can we automate this? It would be a good exercise in 
 Compare H1 data to L1 (can we break this up into smaller tasks?)
 	To do this comparison, make a SNR cut
 	Watch out for injections
+	Steps/subtasks:
+		read in data file
+		calculate signal/noise ratio (SNR)
+		make signal/noise cut
+		compare two detectors
+		output events (high SNR) that take place at the same time in both detectors
+

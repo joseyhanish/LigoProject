@@ -1,5 +1,5 @@
 Work through LIGO signal processing tutorial (Hayley and Nathan)
-Grab hdf5 files from LIGO (can we automate this? It would be a good exercise in Python)
+Grab hdf5 files from LIGO (Josey)
 Compare H1 data to L1 (can we break this up into smaller tasks?)
 	To do this comparison, make a SNR cut
 	Watch out for injections

@@ -10,25 +10,32 @@ import matplotlib.pyplot as plt
 import h5py
 import readligo as rl
 
+def open_ligo(file_name):
+    # Open the File
+    dataFile = h5py.File(file_name, 'r')
+    return dataFile 
 
-# Open the File
-fileName = 'L-L1_LOSC_4_V1-931160064-4096.hdf5'
-dataFile = h5py.File(fileName, 'r')
-
-# Explore the file
-for key in dataFile.keys():
-    print key 
+def read(file_name):
+    # Open the File
+    dataFile = h5py.File(file_name, 'r')
+    return dataFile 
     
-# Read in strain data
-strain = dataFile['strain']['Strain'].value
-ts = dataFile['strain']['Strain'].attrs['Xspacing']
-
-# Print out some meta data
-print "\n\n"
-metaKeys = dataFile['meta'].keys()
-meta = dataFile['meta']
-for key in metaKeys:
-    print key, meta[key].value
+    # Explore the file
+    for key in dataFile.keys():
+        print key 
+        
+    # Read in strain data
+    strain = dataFile['strain']['Strain'].value
+    timestep = dataFile['strain']['Strain'].attrs['Xspacing']
+    
+    # Print out some meta data
+    print "\n\n"
+    metaKeys = dataFile['meta'].keys()
+    meta = dataFile['meta']
+    for key in metaKeys:
+        print key, meta[key].value
+        
+    return strain, timestep, meta
     
 
 # Create a time vector
@@ -36,7 +43,7 @@ gpsStart = meta['GPSstart'].value
 duration = meta['Duration'].value
 gpsEnd   = gpsStart + duration
 
-time = np.arange(gpsStart, gpsEnd, ts)
+time = np.arange(gpsStart, gpsEnd, timestep)
 
 # Plot the time series
 numSamples = 10000
@@ -67,3 +74,6 @@ for (begin, end) in segList:
     plt.plot(rel_time[0:N], strain[0:N])
     plt.xlabel('Seconds since GPS ' + str(begin) )
 plt.show()
+
+if __name__ == "__main__":
+    file_name = 'L-L1_LOSC_4_V1-931160064-4096.hdf5'

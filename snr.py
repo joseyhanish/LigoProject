@@ -37,7 +37,7 @@ def plot_frequency_spectrum(strain_data, dt):
     
 #    print freqs[1] - freqs[0]
     plt.figure(figsize=(10,10))
-    plt.plot(freqs[500:], amplitudes[500:])
+    plt.plot(freqs[1200:16000], amplitudes[1200:16000])
     
 if __name__ == '__main__':
 #    test = [0,1,0,1,0,1,3,4,5,4,3,0,1,0,1,0]

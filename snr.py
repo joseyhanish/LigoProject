@@ -39,6 +39,9 @@ def plot_frequency_spectrum(strain_data, dt):
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1200:16000], amplitudes[1200:16000])
     
+    # Whiten the data
+    
+    
 if __name__ == '__main__':
 #    test = [0,1,0,1,0,1,3,4,5,4,3,0,1,0,1,0]
 #    print snr_old(test)

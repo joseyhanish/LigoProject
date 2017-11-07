@@ -15,7 +15,7 @@ def snr_old(signal):
         np.std(signal[:signal.index(np.amax(signal))-3]+signal[signal.index(np.amax(signal))+3:])
 
 def snr(strain_data):
-    fourier_domain_strain = list(np.fft.fft(strain_data))
+    fourier_domain_strain = list(np.absolute(np.fft.fft(strain_data)))
     print np.amax(fourier_domain_strain)
     print np.std(fourier_domain_strain[:fourier_domain_strain.index(np.amax(fourier_domain_strain))-3]\
         +fourier_domain_strain[fourier_domain_strain.index(np.amax(fourier_domain_strain))+3:])

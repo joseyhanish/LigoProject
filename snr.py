@@ -8,6 +8,9 @@ Created on Tue Oct 24 13:45:44 2017
 import numpy as np
 from readligo import loaddata
 import matplotlib.pyplot as plt
+from scipy.signal import convolve
+from astropy.convolution import Box1DKernel
+
 
 def snr_old(signal):
     print np.amax(signal)
@@ -38,9 +41,25 @@ def plot_frequency_spectrum(strain_data, dt):
 #    print freqs[1] - freqs[0]
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1200:16000], amplitudes[1200:16000])
+    plt.show()
     
-    # Whiten the data
+    # Whiten the amplitudes by convolving the amplitudes
+    convolved_amps = convolve(amplitudes, Box1DKernel(50), mode='same')
+    whiten_amps = amplitudes / convolved_amps
     
+    plt.figure(figsize=(10,10))
+    plt.plot(freqs[1:], whiten_amps[1:])
+    plt.show()
+    
+    # What if I convolve the original strain data?
+    convolved_strain = convolve(strain_data, Box1DKernel(50), mode='same')
+    convolved_fourier = np.fft.rfft(convolved_strain)
+    convolved_amplitudes = np.absolute(convolved_fourier)
+    whiten_amps = amplitudes / convolved_amplitudes
+    
+    plt.figure(figsize=(10,10))
+    plt.plot(freqs[1:], whiten_amps[1:])
+    plt.show()
     
 if __name__ == '__main__':
 #    test = [0,1,0,1,0,1,3,4,5,4,3,0,1,0,1,0]

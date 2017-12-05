@@ -7,11 +7,16 @@ Created on Tue Oct 24 13:45:44 2017
 
 import numpy as np
 from readligo import loaddata
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.signal import convolve
 from astropy.convolution import Box1DKernel
 import matplotlib.mlab as mlab
 from scipy.interpolate import interp1d
+import os
+
+font = {'size': 18}
+matplotlib.rc('font', **font)
 
 
 def snr_old(signal):
@@ -30,26 +35,27 @@ def snr(strain_data):
         np.std(fourier_domain_strain[:fourier_domain_strain.index(np.amax(fourier_domain_strain))-3]\
         +fourier_domain_strain[fourier_domain_strain.index(np.amax(fourier_domain_strain))+3:])
 
-def plot_frequency_spectrum(strain_data, times, dt):
+def plot_frequency_spectrum(strain_data, times, dt, eventname):
+    
     fourier = np.fft.rfft(strain_data)
     amplitudes = np.absolute(fourier)
     freqs = np.fft.rfftfreq(len(strain_data), dt)
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1:], amplitudes[1:])
-    plt.title('Raw frequency-amplitude spectrum')
+    plt.title('Raw frequency-amplitude spectrum {0} {1}'.format(os.path.basename(filename), eventname))
     plt.xlabel('Frequency')
     plt.ylabel('Amplitude')
-    plt.savefig('RawFreqSpec.png')
+#    plt.savefig('RawFreqSpec.png')
     plt.show()
     
 #    print freqs[1] - freqs[0]
     # Zoom in
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1200:16000], amplitudes[1200:16000])
-    plt.title('Raw frequency-amplitude spectrum - 20 Hz to 500 Hz ')
+    plt.title('Raw frequency-amplitude spectrum - 20 Hz to 500 Hz {0}'.format(os.path.basename(filename), eventname))
     plt.xlabel('Frequency')
     plt.ylabel('Amplitude')
-    plt.savefig('RawFreqSpec20to500.png')
+#    plt.savefig('RawFreqSpec20to500.png')
     plt.show()
     
     # Whiten the amplitudes by using mlab to get the psd
@@ -59,14 +65,15 @@ def plot_frequency_spectrum(strain_data, times, dt):
     # Plot the psd (to make sure it looks like the psd in the workbook)
     plt.figure(figsize=(10,10))
     plt.plot(freqs2[1:], np.sqrt(pxx[1:]))
-    plt.title('Power Spectral Density')
-    plt.savefig('PSD.png')
+    plt.title('Power Spectral Density {0}'.format(os.path.basename(filename),eventname))
+#    plt.savefig('PSD.png')
     plt.xlabel('Frequency')
     plt.show()
     
     plt.figure(figsize=(10,10))
     plt.loglog(freqs2[1:], np.sqrt(pxx[1:]))
-    plt.title('Power Spectral Density - Log Scale')
+    plt.title('Power Spectral Density - Log Scale {0}'.format(os.path.basename(filename),eventname))
+    plt.xlabel('Frequency')
     plt.xlim(20, 2000)
     plt.show()
     
@@ -78,15 +85,19 @@ def plot_frequency_spectrum(strain_data, times, dt):
     # Plot the whitened frequency spectrum
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1:], whitened_amplitudes[1:])
-    plt.title('Whitened Frequency Spectrum')
-    plt.savefig('WhitenedFreqSpec.png')
+    plt.title('Whitened Frequency Spectrum {0}'.format(os.path.basename(filename),eventname))
+    plt.xlabel('Frequency')
+    plt.ylabel('Amplitude')
+#    plt.savefig('WhitenedFreqSpec.png')
     plt.show()
     
     # Zoom in
     plt.figure(figsize=(10,10))
     plt.plot(freqs[1200:16000], whitened_amplitudes[1200:16000])
-    plt.title('Whitened Frequency Spectrum - 20 Hz to 500 Hz')
-    plt.savefig('WhitenedFreqSpec20to500.png')
+    plt.title('Whitened Frequency Spectrum - 20 Hz to 500 Hz {0}'.format(os.path.basename(filename),eventname))
+    plt.xlabel('Frequency')
+    plt.ylabel('Amplitude')
+#    plt.savefig('WhitenedFreqSpec20to500.png')
     plt.show()
     
     # Bandpassing at 50 - 400 Hz
@@ -95,7 +106,9 @@ def plot_frequency_spectrum(strain_data, times, dt):
     
     plt.figure(figsize=(10,10))
     plt.plot(bp_freqs, bp_amps)
-    plt.title('Whitened Frequency Spectrum After Bandpassing')
+    plt.title('Whitened Frequency Spectrum After Bandpassing {0}'.format(os.path.basename(filename),eventname))
+    plt.xlabel('Frequency')
+    plt.ylabel('Amplitude')
     plt.show()
     
 #    # Return the whitened amplitudes to the frequency-strain domain
@@ -109,7 +122,9 @@ if __name__ == '__main__':
 #    test = [0,1,0,1,0,1,3,4,5,4,3,0,1,0,1,0]
 #    print snr_old(test)
     
-    filename = r'C:\Users\joskh\Documents\2017Fall\ast376r\LOSC_Event_tutorial\LOSC_Event_tutorial\L-L1_LOSC_4_V1-1167559920-32.hdf5'
+#    filename = r'C:\Users\joskh\Documents\2017Fall\ast376r\LOSC_Event_tutorial\LOSC_Event_tutorial\L-L1_LOSC_4_V1-1167559920-32.hdf5'
+    filename = r'C:\Users\joskh\Documents\2017Fall\ast376r\H-H1_LOSC_C00_4_V1-1186741845-32.hdf5'
+    eventname = 'GW170814'
     strain, time, chan_dict = loaddata(filename)
     if strain is None or time is None or chan_dict is None:
         print 'Loading data failed'
@@ -121,5 +136,5 @@ if __name__ == '__main__':
 #    print snr(strain)
     
     print '\n'
-    plot_frequency_spectrum(strain, time, dt)
+    plot_frequency_spectrum(strain, time, dt, eventname)
     
